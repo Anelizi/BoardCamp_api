@@ -4,13 +4,16 @@ export async function postGame(req, res) {
   const { name, image, stockTotal, pricePerDay } = req.body;
 
   try {
-    const existGame = await db.query(`SELECT name FROM games WHERE name = $1`, [name]);
+    const existGame = await db.query(`SELECT name FROM games WHERE name = $1`, [
+      name,
+    ]);
 
-    if(existGame.rowCount > 0){
+    if (existGame.rowCount > 0) {
       return res.status(409).send("JOGO já registrado!!");
     }
 
-    await db.query(`
+    await db.query(
+      `
       INSERT INTO games (name. image, "stockTotal", "pricePerDay")
       VALUES ($1, $2, $3, $4)
     `,

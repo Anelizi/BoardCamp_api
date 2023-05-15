@@ -4,7 +4,7 @@ export async function postCustomer(req, res) {
   const { name, phone, cpf, birthday } = req.body;
 
   try {
-    const existCustomer = await db.query(`SELECT * FROM customers WHERE cpf = $1;`,[cpf]);
+    const existCustomer = await db.query(`SELECT cpf FROM customers WHERE cpf = $1;`,[cpf]);
 
     if (existCustomer.rowCount > 0) {
       return res.status(409).send("cliente já existe");
@@ -37,7 +37,7 @@ export async function getIdCustomers(req, res) {
   try {
     const customer = await db.query(`SELECT * FROM customers WHERE id = $1;`, [id]);
 
-    if(!customer.rows.length) return res.status(404).send("cliente não existir")
+    if(customer.rowCount === 0) return res.status(404).send("cliente não existir")
 
     res.status(200).send(customer.rows[0]);
 
@@ -51,11 +51,11 @@ export async function putCustomers(req, res) {
     const { name, phone, cpf, birthday } = req.body;
 
   try {
-    const customer = await db.query(`SELECT * FROM customers WHERE cpf = $1 AND id <> $2;`, 
+    const customer = await db.query(`SELECT cpf FROM customers WHERE cpf = $1 AND id <> $2;`, 
         [cpf, id]
     );
 
-    if(customer.rowCount > 0){
+    if(customer.rows.length > 0){
         return res.status(409).send("Cliente não existi")
     }
 

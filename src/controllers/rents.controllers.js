@@ -76,8 +76,18 @@ export async function getRents(req, res){
 }
 
 export async function deleteResnt(req, res){
+    const { id } = req.params;
+
     try {
-        
+        const rents = await db.query(`SELECT * FROM rentals WHERE id = $1`, [id]);
+
+        if(rents.rows.length === 0) return res.status(404).send("invalido");
+
+        if(!rents.rows[0].returnDate) return res.status(400).send("invalido");
+
+        await db.query(`DELETE FROM rentals WHERE id = $1`, [id]);
+
+        res.status(200).send("OK")
     } catch (error) {
         res.status(500).send(error);
     }

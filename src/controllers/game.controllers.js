@@ -1,10 +1,10 @@
-import { db } from "../database/database.connection,js";
+import { db } from "../database/database.connection.js";
 
 export async function postGame(req, res) {
   const { name, image, stockTotal, pricePerDay } = req.body;
 
   try {
-    const existGame = await db.query(`SELECT name FROM games WHERE name = $1`, [
+    const existGame = await db.query(`SELECT name FROM games WHERE name = $1;`, [
       name,
     ]);
 
@@ -15,7 +15,7 @@ export async function postGame(req, res) {
     await db.query(
       `
       INSERT INTO games (name. image, "stockTotal", "pricePerDay")
-      VALUES ($1, $2, $3, $4)
+      VALUES ($1, $2, $3, $4);
     `,
       [name, image, stockTotal, pricePerDay]
     );

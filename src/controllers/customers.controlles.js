@@ -35,7 +35,15 @@ export async function getCustomers(req, res) {
 }
 
 export async function getIdCustomers(req, res) {
+    const { id } = req.params;
+
   try {
+    const customer = await db.query(`SELECT * FROM customers WHERE id=$1`, [id]);
+
+    if(customer.rowCount === 0) return res.status(404).send("cliente não existir")
+
+    res.status(200).send(customer.rows[0]);
+
   } catch (error) {
     res.status(500).send(error);
   }

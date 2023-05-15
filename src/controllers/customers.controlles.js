@@ -54,7 +54,11 @@ export async function putCustomers(req, res) {
     const { name, phone, cpf, birthday } = req.body;
 
   try {
-    const customer = await db.query(`SELECT cpf FROM customers WHERE cpf = $1 AND id <> $2`, [cpf, id]);
+    const customer = await db.query(`
+        SELECT cpf FROM customers 
+        WHERE cpf = $1 AND id <> $2`, 
+        [cpf, id]
+    );
 
     if(customer.rowCount > 0){
         return res.status(409).send("Cliente não existi")

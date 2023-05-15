@@ -2,7 +2,7 @@ import { db } from "../database/database.connection.js"
 import dayjs from "dayjs";
 
 export async function postRent(req, res){
-    const { customerId, gameId, daysRentend } = res.body;
+    const { customerId, gameId, daysRentend } = req.body;
     const date = dayjs().format('YYYY-MM-DD');
 
     try {
